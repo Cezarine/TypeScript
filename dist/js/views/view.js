@@ -1,10 +1,19 @@
 export class View {
     elemento;
-    constructor(seletor) {
-        this.elemento = document.querySelector(seletor);
+    escapar = false;
+    constructor(seletor, escapar) {
+        const elemento = document.querySelector(seletor);
+        if (elemento) {
+            this.elemento = elemento;
+        }
+        else
+            throw Error('View não foi criada');
     }
     Update(pModel) {
-        const template = this.Template(pModel);
+        let template = this.Template(pModel);
+        if (this.escapar) {
+            template = template.replace(/<script>[\s\S]*?<\/script>/, '');
+        }
         this.elemento.innerHTML = template;
     }
 }

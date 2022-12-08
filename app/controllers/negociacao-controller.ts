@@ -10,16 +10,14 @@ export class NegociacaoController
     private inputQuantidade: HTMLInputElement;
     private inputValor: HTMLInputElement;
     private negociacoes = new Negociacoes(); 
-    private negociacoesView = new NegociacoesView('#negociacoesView');
-    private mensagemView = new MensagemView('#mensagemView');
-    private readonly DOMINGO = 0;
-    private readonly SABADO = 6;
+    private negociacoesView = new NegociacoesView('#negociacoesView', true);
+    private mensagemView = new MensagemView('#mensagemView', false);
 
     constructor()
     {
-        this.inputData       = document.querySelector('#data');
-        this.inputQuantidade = document.querySelector('#quantidade');
-        this.inputValor      = document.querySelector('#valor');
+        this.inputData       = document.querySelector('#data') as HTMLInputElement;
+        this.inputQuantidade = <HTMLInputElement>document.querySelector('#quantidade');
+        this.inputValor      = document.querySelector('#valor') as HTMLInputElement;
         this.negociacoesView.Update(this.negociacoes);
     }
 
@@ -27,15 +25,6 @@ export class NegociacaoController
     {
         this.negociacoesView.Update(this.negociacoes);
         this.mensagemView.Update('Negociação Salva com Sucesso!');
-    }
-
-    private criaNegociacao(): Negociacao
-    {
-        const exp = /-/g;
-        const date = new Date(this.inputData.value.replace(exp,','));
-        const quantidade = parseInt(this.inputQuantidade.value);
-        const valor = parseFloat(this.inputValor.value);
-        return new Negociacao(date,quantidade, valor);
     }
 
     private LimpaCampos(): void
@@ -54,7 +43,7 @@ export class NegociacaoController
 
     Adiciconar(): void
     {
-        const negociacao = this.criaNegociacao();
+        const negociacao = Negociacao.CriaNegociacao(this.inputData.value, this.inputQuantidade.value, this.inputValor.value);
         if (!this.DiasUteis(negociacao.data))
         {
             this.mensagemView.Update('Não pode fazer transações em dias não uteis!!');

@@ -8,10 +8,8 @@ export class NegociacaoController {
     inputQuantidade;
     inputValor;
     negociacoes = new Negociacoes();
-    negociacoesView = new NegociacoesView('#negociacoesView');
-    mensagemView = new MensagemView('#mensagemView');
-    DOMINGO = 0;
-    SABADO = 6;
+    negociacoesView = new NegociacoesView('#negociacoesView', true);
+    mensagemView = new MensagemView('#mensagemView', false);
     constructor() {
         this.inputData = document.querySelector('#data');
         this.inputQuantidade = document.querySelector('#quantidade');
@@ -21,13 +19,6 @@ export class NegociacaoController {
     AtualizaView() {
         this.negociacoesView.Update(this.negociacoes);
         this.mensagemView.Update('Negociação Salva com Sucesso!');
-    }
-    criaNegociacao() {
-        const exp = /-/g;
-        const date = new Date(this.inputData.value.replace(exp, ','));
-        const quantidade = parseInt(this.inputQuantidade.value);
-        const valor = parseFloat(this.inputValor.value);
-        return new Negociacao(date, quantidade, valor);
     }
     LimpaCampos() {
         this.inputData.value = '';
@@ -40,7 +31,7 @@ export class NegociacaoController {
             pData.getDay() < DiasDaSemana.SABADO;
     }
     Adiciconar() {
-        const negociacao = this.criaNegociacao();
+        const negociacao = Negociacao.CriaNegociacao(this.inputData.value, this.inputQuantidade.value, this.inputValor.value);
         if (!this.DiasUteis(negociacao.data)) {
             this.mensagemView.Update('Não pode fazer transações em dias não uteis!!');
             return;
