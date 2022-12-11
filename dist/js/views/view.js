@@ -1,7 +1,5 @@
 export class View {
-    elemento;
-    escapar = false;
-    constructor(seletor, escapar) {
+    constructor(seletor) {
         const elemento = document.querySelector(seletor);
         if (elemento) {
             this.elemento = elemento;
@@ -11,9 +9,6 @@ export class View {
     }
     Update(pModel) {
         let template = this.Template(pModel);
-        if (this.escapar) {
-            template = template.replace(/<script>[\s\S]*?<\/script>/, '');
-        }
         this.elemento.innerHTML = template;
     }
 }

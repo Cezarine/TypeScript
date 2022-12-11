@@ -1,5 +1,7 @@
 export class Negociacoes {
-    ListNegociacoes = [];
+    constructor() {
+        this.ListNegociacoes = [];
+    }
     Adiciona(pNegociacao) {
         this.ListNegociacoes.push(pNegociacao);
     }

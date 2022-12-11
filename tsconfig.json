@@ -2,11 +2,12 @@
     "compilerOptions": 
     {
         "outDir": "dist/js",
-        "target":"ESNext",
+        "target":"ES6",
         "noEmitOnError": true,
         "noImplicitAny": true,
         "removeComments": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "experimentalDecorators": true
     },
     "include":["app/**/*"]
 }

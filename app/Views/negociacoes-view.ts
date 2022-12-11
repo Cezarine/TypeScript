@@ -1,3 +1,4 @@
+import { Scape } from "../Decorators/Scape.js";
 import { Negociacoes } from "../Models/negociacoes.js";
 import { View } from "./view.js";
 
@@ -7,7 +8,7 @@ export class NegociacoesView extends View<Negociacoes>
     {
         return new Intl.DateTimeFormat().format(data)
     }
-
+    @Scape()
     protected Template(pModel: Negociacoes): string {
         return `
         <table class="table table-hover table-bordered">

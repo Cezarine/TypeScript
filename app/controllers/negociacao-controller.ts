@@ -1,3 +1,6 @@
+import { domInjector } from "../Decorators/DomInjects.js";
+import { Inspect } from "../Decorators/Inspect.js";
+import { LogarTempoExcecucao } from "../Decorators/log-tempo-de-execucao.js";
 import { DiasDaSemana } from "../Enums/Dias-da-Semana.js";
 import { Negociacao } from "../Models/negociacao.js";
 import { Negociacoes } from "../Models/negociacoes.js";
@@ -6,18 +9,18 @@ import { NegociacoesView } from "../Views/negociacoes-view.js";
 
 export class NegociacaoController
 {
+    @domInjector('#data')
     private inputData: HTMLInputElement;
+    @domInjector('#quantidade')
     private inputQuantidade: HTMLInputElement;
+    @domInjector('#valor')
     private inputValor: HTMLInputElement;
     private negociacoes = new Negociacoes(); 
-    private negociacoesView = new NegociacoesView('#negociacoesView', true);
-    private mensagemView = new MensagemView('#mensagemView', false);
+    private negociacoesView = new NegociacoesView('#negociacoesView');
+    private mensagemView = new MensagemView('#mensagemView');
 
     constructor()
     {
-        this.inputData       = document.querySelector('#data') as HTMLInputElement;
-        this.inputQuantidade = <HTMLInputElement>document.querySelector('#quantidade');
-        this.inputValor      = document.querySelector('#valor') as HTMLInputElement;
         this.negociacoesView.Update(this.negociacoes);
     }
 
@@ -41,9 +44,15 @@ export class NegociacaoController
                pData.getDay() < DiasDaSemana.SABADO;
     }
 
+    @Inspect()
+    @LogarTempoExcecucao()
     Adiciconar(): void
     {
-        const negociacao = Negociacao.CriaNegociacao(this.inputData.value, this.inputQuantidade.value, this.inputValor.value);
+        const negociacao = Negociacao.CriaNegociacao(
+            this.inputData.value, 
+            this.inputQuantidade.value, 
+            this.inputValor.value
+        );
         if (!this.DiasUteis(negociacao.data))
         {
             this.mensagemView.Update('Não pode fazer transações em dias não uteis!!');

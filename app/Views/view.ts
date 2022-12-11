@@ -1,8 +1,10 @@
+import { Inspect } from "../Decorators/Inspect.js";
+import { LogarTempoExcecucao } from "../Decorators/log-tempo-de-execucao.js";
+
 export abstract class View<T>
 {
     protected elemento: HTMLElement;
-    private escapar: boolean = false;
-    constructor(seletor: string, escapar?: boolean)// ? é a mesmo coisa que colocar igual
+    constructor(seletor: string)// ? é a mesmo coisa que colocar igual
     {
         const elemento = document.querySelector(seletor);
         if(elemento)
@@ -15,13 +17,11 @@ export abstract class View<T>
 
     protected abstract Template(pModel: T): string;
 
+//    @Inspect()
+//    @LogarTempoExcecucao(true)
     Update(pModel: T): void
     {
-        let template = this.Template(pModel);
-        if(this.escapar)
-        {
-            template = template.replace(/<script>[\s\S]*?<\/script>/, '');
-        }
+        let template = this.Template(pModel);       
         this.elemento.innerHTML = template;  
     }
 }

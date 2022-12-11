@@ -1,19 +1,22 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { domInjector } from "../Decorators/DomInjects.js";
+import { Inspect } from "../Decorators/Inspect.js";
+import { LogarTempoExcecucao } from "../Decorators/log-tempo-de-execucao.js";
 import { DiasDaSemana } from "../Enums/Dias-da-Semana.js";
 import { Negociacao } from "../Models/negociacao.js";
 import { Negociacoes } from "../Models/negociacoes.js";
 import { MensagemView } from "../Views/mensagem-view.js";
 import { NegociacoesView } from "../Views/negociacoes-view.js";
 export class NegociacaoController {
-    inputData;
-    inputQuantidade;
-    inputValor;
-    negociacoes = new Negociacoes();
-    negociacoesView = new NegociacoesView('#negociacoesView', true);
-    mensagemView = new MensagemView('#mensagemView', false);
     constructor() {
-        this.inputData = document.querySelector('#data');
-        this.inputQuantidade = document.querySelector('#quantidade');
-        this.inputValor = document.querySelector('#valor');
+        this.negociacoes = new Negociacoes();
+        this.negociacoesView = new NegociacoesView('#negociacoesView');
+        this.mensagemView = new MensagemView('#mensagemView');
         this.negociacoesView.Update(this.negociacoes);
     }
     AtualizaView() {
@@ -41,3 +44,16 @@ export class NegociacaoController {
         this.AtualizaView();
     }
 }
+__decorate([
+    domInjector('#data')
+], NegociacaoController.prototype, "inputData", void 0);
+__decorate([
+    domInjector('#quantidade')
+], NegociacaoController.prototype, "inputQuantidade", void 0);
+__decorate([
+    domInjector('#valor')
+], NegociacaoController.prototype, "inputValor", void 0);
+__decorate([
+    Inspect(),
+    LogarTempoExcecucao()
+], NegociacaoController.prototype, "Adiciconar", null);
