@@ -3,6 +3,7 @@ import { NegociacaoController } from "./Controllers/negociacao-controller.js";
 const controller = new NegociacaoController();
 
 const form = document.querySelector('.form');
+const vBotaoImporta = document.querySelector('#botao-importa');
 
 if  (form)
 {
@@ -15,5 +16,17 @@ if  (form)
 else
 {
     throw Error('Não foi possivel inicializar a aplicação!');
+}
+
+if  (vBotaoImporta)
+{
+    vBotaoImporta.addEventListener('click', () => 
+    {
+        controller.ImportaDados();
+    })
+}
+else
+{
+    throw Error('Botão Importa não foi encontrado');
 }
 

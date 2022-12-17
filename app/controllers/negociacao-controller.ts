@@ -4,6 +4,8 @@ import { LogarTempoExcecucao } from "../Decorators/log-tempo-de-execucao.js";
 import { DiasDaSemana } from "../Enums/Dias-da-Semana.js";
 import { Negociacao } from "../Models/negociacao.js";
 import { Negociacoes } from "../Models/negociacoes.js";
+import { NegociacoesServices } from "../Services/NegociacoesServices.js";
+import { Imprimir } from "../Utils/Imprimir.js";
 import { MensagemView } from "../Views/mensagem-view.js";
 import { NegociacoesView } from "../Views/negociacoes-view.js";
 
@@ -18,6 +20,7 @@ export class NegociacaoController
     private negociacoes = new Negociacoes(); 
     private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
+    private negociacoesService = new NegociacoesServices;
 
     constructor()
     {
@@ -44,6 +47,27 @@ export class NegociacaoController
                pData.getDay() < DiasDaSemana.SABADO;
     }
 
+    ImportaDados(): void
+    {       
+        this.negociacoesService
+            .ObterNegociacoesDoDia()
+            .then(NegociacoesDeHoje => {
+                return NegociacoesDeHoje.filter(NegociacoesDeHoje => {
+                    return !this.negociacoes
+                    .ListarNegociacoes()
+                    .some(negociacao => negociacao
+                        .EhIgual(NegociacoesDeHoje)
+                        );
+                });
+            })
+            .then(NegociacoesDeHoje => {
+                for (let negociacao of NegociacoesDeHoje){
+                    this.negociacoes.Adiciona(negociacao);
+                }
+                this.negociacoesView.Update(this.negociacoes);
+            });           
+    }
+
     @Inspect()
     @LogarTempoExcecucao()
     Adiciconar(): void
@@ -59,6 +83,7 @@ export class NegociacaoController
             return;
         }
         this.negociacoes.Adiciona(negociacao);
+        Imprimir(negociacao, this.negociacoes);
         this.LimpaCampos();
         this.AtualizaView();
     }
